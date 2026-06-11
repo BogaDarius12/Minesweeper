@@ -12,12 +12,12 @@ public class FereastraJoc extends JFrame {
     private Timer timerGrafic;
     private int secundeTrecute = 0;
 
-    // 1. Dimensiunile tabelei și numarul de bombe
+    // 1. Dimensiunile tabelei si numarul de bombe
     private final int NR_LINII = 10;
     private final int NR_COLOANE = 10;
     private final int NR_BOMBE = 10;
 
-    // Primul click trebuie sa fie safe, pornește ca true
+    // Primul click trebuie sa fie safe, porneste ca true
     private boolean primulClick = true;
 
     // 2. Matricea de butoane pentru a le accesa din orice metoda
@@ -30,13 +30,12 @@ public class FereastraJoc extends JFrame {
         panouPrincipal = new JPanel(new BorderLayout());
         panouGrid = new JPanel();
 
-        // --- CONFIGURARE ZONa DE SUS (MENIU + TIMER) ---
+
         JPanel panouSus = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         etichetaTimer = new JLabel("Timp: 0s");
-        etichetaTimer.setFont(new Font("Arial", Font.BOLD, 18)); // Il facem mare și vizibil
+        etichetaTimer.setFont(new Font("Arial", Font.BOLD, 18));
         panouSus.add(etichetaTimer);
 
-        // Adaugam panoul de sus In NORTH, iar gridul de joc In CENTER
         panouPrincipal.add(panouSus, BorderLayout.NORTH);
         panouPrincipal.add(panouGrid, BorderLayout.CENTER);
 
@@ -48,10 +47,10 @@ public class FereastraJoc extends JFrame {
         panouGrid.setLayout(new GridLayout(NR_LINII, NR_COLOANE));
 
         genereazaButoane();
-        configureazaTimer(); // <--- Inițializam mecanismul de timer
+        configureazaTimer(); // Initializam mecanismul de timer
 
         pack();
-        setSize(650, 700); // Am marit puțin Inalțimea de la 450 la 500 ca sa aiba loc și timerul sus
+        setSize(650, 700);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -78,7 +77,7 @@ public class FereastraJoc extends JFrame {
                 final int linieCurenta = i;
                 final int coloanaCurenta = j;
 
-                // --- CLICK STÂNGA (DESCOPERIRE) ---
+                // --- CLICK STANGA (DESCOPERIRE) ---
                 buton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -100,7 +99,6 @@ public class FereastraJoc extends JFrame {
 
                             timerGrafic.start();
                         }
-                        // ---------------------------------------
 
                         // Verificam daca celula pe care s-a apasat este MINATa
                         if (celulaLogica.esteMinat()) {
@@ -108,7 +106,7 @@ public class FereastraJoc extends JFrame {
                             butonApasat.setBackground(Color.RED);
                             System.out.println("Game Over! Ai calcat pe o mina.");
 
-                            // Dezactivam tot și aratam restul bombelor
+                            // Dezactivam tot si aratam restul bombelor
                             dezactiveazaToateButoanele();
 
                             // Intrebam utilizatorul daca vrea Try Again
@@ -123,23 +121,26 @@ public class FereastraJoc extends JFrame {
                             if (raspuns == JOptionPane.YES_OPTION) {
                                 reseteazaJocul();
                             }
+                            if (raspuns == JOptionPane.NO_OPTION) {
+                                System.exit(0);
+                            }
                         }
                         // Daca este o celula sigura
                         else {
                             // Trimitem comanda de Flood Fill In logica jocului
                             tablaLogica.descoperaCelula(linieCurenta, coloanaCurenta);
 
-                            // Actualizam toata interfața grafica pe ecran
+                            // Actualizam toata interfata grafica pe ecran
                             actualizeazaInterfata();
 
-                            // Verificam daca aceasta mișcare a adus victoria
+                            // Verificam daca aceasta miscare a adus victoria
                             if (tablaLogica.verificaVictorie()) {
-                                System.out.println("Felicitari! Ai câștigat!");
+                                System.out.println("Felicitari! Ai castigat!");
                                 dezactiveazaToateButoanele();
 
                                 int raspuns = JOptionPane.showConfirmDialog(
                                         FereastraJoc.this,
-                                        "Felicitari, ai câștigat! Vrei sa mai joci o runda?",
+                                        "Felicitari, ai castigat! Vrei sa mai joci o runda?",
                                         "Victorie!",
                                         JOptionPane.YES_NO_OPTION,
                                         JOptionPane.INFORMATION_MESSAGE
@@ -147,6 +148,9 @@ public class FereastraJoc extends JFrame {
 
                                 if (raspuns == JOptionPane.YES_OPTION) {
                                     reseteazaJocul();
+                                }
+                                if (raspuns == JOptionPane.NO_OPTION){
+                                    System.exit(0);
                                 }
                             }
                         }
@@ -182,7 +186,7 @@ public class FereastraJoc extends JFrame {
         }
     }
 
-    // Metoda care parcurge logica din spate și sincronizeaza butoanele de pe ecran fara sa le piarda culorile
+    // Metoda care parcurge logica din spate si sincronizeaza butoanele de pe ecran fara sa le piarda culorile
     private void actualizeazaInterfata() {
         for (int i = 0; i < NR_LINII; i++) {
             for (int j = 0; j < NR_COLOANE; j++) {
@@ -190,7 +194,7 @@ public class FereastraJoc extends JFrame {
                 JButton butonGrafic = matriceButoane[i][j];
 
                 if (celulaLogica.esteDescoperit()) {
-                    // Blocam interacțiunea pastrând culorile vii
+                    // Blocam interactiunea pastrand culorile vii
                     butonGrafic.setFocusable(false);
                     butonGrafic.setBackground(new Color(235, 235, 235)); // Fundal plat gri deschis
                     butonGrafic.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -205,14 +209,14 @@ public class FereastraJoc extends JFrame {
                             case 1: butonGrafic.setForeground(Color.BLUE); break;
                             case 2: butonGrafic.setForeground(new Color(0, 128, 0)); break; // Verde Inchis
                             case 3: butonGrafic.setForeground(Color.RED); break;
-                            case 4: butonGrafic.setForeground(new Color(0, 0, 128)); break;  // Navy
+                            case 4: butonGrafic.setForeground(new Color(0, 0, 128)); break;  // Albastru Inchis
                             case 5: butonGrafic.setForeground(new Color(128, 0, 0)); break;  // Maro
-                            case 6: butonGrafic.setForeground(new Color(0, 128, 128)); break; // Teal
+                            case 6: butonGrafic.setForeground(new Color(0, 128, 128)); break; // Albastru Deschis
                             case 7: butonGrafic.setForeground(Color.BLACK); break;
                             case 8: butonGrafic.setForeground(Color.GRAY); break;
                         }
                     } else {
-                        butonGrafic.setText(""); // 0 vecini ramâne complet gol
+                        butonGrafic.setText(""); // 0 vecini ramane complet gol
                     }
                 }
             }
@@ -221,7 +225,7 @@ public class FereastraJoc extends JFrame {
 
     // Oprim posibilitatea de a mai juca dupa un Game Over / Victorie
     private void dezactiveazaToateButoanele() {
-        timerGrafic.stop(); // <--- OPREȘTE TIMERUL AICI!
+        timerGrafic.stop(); // Aici chiar opreste Timer-ul
         for (int i = 0; i < NR_LINII; i++) {
             for (int j = 0; j < NR_COLOANE; j++) {
                 Celula celulaLogica = tablaLogica.getCelula(i, j);
@@ -237,7 +241,7 @@ public class FereastraJoc extends JFrame {
         }
     }
 
-    // Reseteaza interfața și logica la starea inițiala
+    // Reseteaza interfata si logica la starea initiala
     private void reseteazaJocul() {
         tablaLogica = new TablaDeJoc(NR_LINII, NR_COLOANE, NR_BOMBE);
         primulClick = true;
@@ -254,7 +258,7 @@ public class FereastraJoc extends JFrame {
                 buton.setFocusable(true);
                 buton.setBackground(null);
                 buton.setForeground(null);
-                buton.setBorder(UIManager.getBorder("Button.border")); // Resetam la stilul 3D de buton standard
+                buton.setBorder(UIManager.getBorder("Button.border"));
             }
         }
         System.out.println("Jocul a fost resetat cu succes!");
