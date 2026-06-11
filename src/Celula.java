@@ -9,7 +9,7 @@ public class Celula {
 
     }
 
-    public boolean isMinat() {
+    public boolean esteMinat() {
         return this.minat;
     }
 
@@ -17,7 +17,7 @@ public class Celula {
         this.minat = minat;
     }
 
-    public boolean isAreSteag() {
+    public boolean areSteag() {
         return this.areSteag;
     }
 
@@ -25,11 +25,11 @@ public class Celula {
         this.areSteag = areSteag;
     }
 
-    public boolean isDescoperit() {
+    public boolean esteDescoperit() {
         return this.descoperit;
     }
 
-    public void setDescoperit(boolean descoperit) {
+    public void setEsteDescoperit(boolean descoperit) {
         this.descoperit = descoperit;
     }
 
